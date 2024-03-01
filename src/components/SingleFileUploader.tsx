@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./SingleFileUploader.css"; // Import the CSS file
 
 const SingleFileUploader = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -38,15 +39,19 @@ const SingleFileUploader = () => {
   };
 
   return (
-    <>
-      <div className="input-group">
-        <label htmlFor="file" className="sr-only">
-          Choose a file
-        </label>
-        <input id="file" type="file" onChange={handleFileChange} />
-      </div>
+    <div className="file-uploader-container">
+      <label htmlFor="file" className="file-label">
+        Choose a file
+      </label>
+      <input
+        id="file"
+        type="file"
+        className="file-input"
+        onChange={handleFileChange}
+      />
+
       {file && (
-        <section>
+        <section className="file-details">
           File details:
           <ul>
             <li>Name: {file.name}</li>
@@ -57,23 +62,23 @@ const SingleFileUploader = () => {
       )}
 
       {file && (
-        <button onClick={handleUpload} className="submit">
+        <button onClick={handleUpload} className="submit-button">
           Upload a file
         </button>
       )}
 
       <Result status={status} />
-    </>
+    </div>
   );
 };
 
 const Result = ({ status }: { status: string }) => {
   if (status === "success") {
-    return <p>✅ File uploaded successfully!</p>;
+    return <p className="result">✅ File uploaded successfully!</p>;
   } else if (status === "fail") {
-    return <p>❌ File upload failed!</p>;
+    return <p className="result">❌ File upload failed!</p>;
   } else if (status === "uploading") {
-    return <p>⏳ Uploading selected file...</p>;
+    return <p className="result">⏳ Uploading selected file...</p>;
   } else {
     return null;
   }

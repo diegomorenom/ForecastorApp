@@ -7,10 +7,18 @@ const SingleFileUploader = () => {
     "initial" | "uploading" | "success" | "fail"
   >("initial");
 
+  const MAX_FILE_SIZE = 200 * 1024 * 1024; // 10 MB
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      const selectedFile = e.target.files[0];
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        console.error("File size exceeds maximum limit");
+        // Optionally, display an error message to the user
+        return;
+      }
       setStatus("initial");
-      setFile(e.target.files[0]);
+      setFile(selectedFile);
     }
   };
 
@@ -22,17 +30,24 @@ const SingleFileUploader = () => {
       formData.append("file", file);
 
       try {
-        const result = await fetch("https://httpbin.org/post", {
+        const result = await fetch("http://localhost:5000/save_file/", {
           method: "POST",
           body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data" // Ensure the correct content-type header
+          }
         });
+
+        if (!result.ok) {
+          throw new Error(`HTTP error! Status: ${result.status}`);
+        }
 
         const data = await result.json();
 
         console.log(data);
         setStatus("success");
       } catch (error) {
-        console.error(error);
+        console.error("Fetch error:", error);
         setStatus("fail");
       }
     }

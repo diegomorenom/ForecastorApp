@@ -26,13 +26,30 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
     setSelectedModels(selectedModels);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(forecastDays, selectedModels);
     setSubmitted(true);
 
     const formData = { forecastDays, selectedModels };
-    localStorage.setItem('formData', JSON.stringify(formData));
+
+    try {
+      const response = await fetch('http://localhost:5000/process_forecast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form data');
+      }
+
+      const responseData = await response.json();
+      console.log(responseData); // Log the response from the API
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

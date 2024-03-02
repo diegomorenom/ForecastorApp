@@ -26,23 +26,24 @@ const SingleFileUploader = () => {
     if (file) {
       setStatus("uploading");
 
-      const formData = new FormData();
-      formData.append("file", file);
-
       try {
-        const result = await fetch("http://localhost:5000/save_file/", {
+        const formData = new FormData();
+        formData.append("csv_file", file);
+
+        const response = await fetch("http://localhost:5000/save_file/", {
           method: "POST",
           body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data" // Ensure the correct content-type header
-          }
+          // No need to manually set Content-Type header for FormData
+          // headers: {
+          //   "Content-Type": "multipart/form-data",
+          // },
         });
 
-        if (!result.ok) {
-          throw new Error(`HTTP error! Status: ${result.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await result.json();
+        const data = await response.json();
 
         console.log(data);
         setStatus("success");

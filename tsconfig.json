@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Types */
-    "types": ["@uploadcare/blocks/types/jsx"]
+    "types": ["@uploadcare/blocks/types/jsx", "mocha"]
     
   },
   "include": ["src"],

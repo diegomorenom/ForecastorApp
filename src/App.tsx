@@ -1,7 +1,15 @@
 import React from 'react';
-import "./App.css"; // Import the CSS file
-import SingleFileUploader from "./components/SingleFileUploader";
-import ForecastForm from "./components/ForecastForm"; // Import the ForecastForm component
+import './App.css'; // Import the CSS file
+import SingleFileUploader from './components/SingleFileUploader';
+import ForecastForm from './components/ForecastForm'; // Import the ForecastForm component
+import TimeSeriesContainer from './components/TimeSeriesContainer';
+
+// Import necessary packages for Chart.js
+import { Chart, registerables } from 'chart.js';
+import 'chartjs-adapter-moment';
+
+// Register the date adapter and other necessary chart elements
+Chart.register(...registerables);
 
 function App() {
   const handleSubmit = (forecastDays: number, selectedModels: string[]) => {
@@ -16,6 +24,7 @@ function App() {
       <h2 className="upload-heading">Upload your time series file.</h2>
       <SingleFileUploader />
       <ForecastForm onSubmit={handleSubmit} />
+      <TimeSeriesContainer />
     </div>
   );
 }

@@ -17,7 +17,7 @@ const TimeSeriesContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:8000/forecast_holt_winters_1_20170815.csv');
+      const response = await fetch('http://localhost:5000/forecast/forecast_holt_winters_1_20170815.csv');
       
       if (!response.body) {
         // Handle the case where response.body is null

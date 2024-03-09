@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "./SingleFileUploader.css"; // Import the CSS file
 
-const SingleFileUploader = () => {
+interface SingleFileUploaderProps {
+  onSuccess: () => void;
+}
+
+const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) => {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<
     "initial" | "uploading" | "success" | "fail"
@@ -47,6 +51,7 @@ const SingleFileUploader = () => {
 
         console.log(data);
         setStatus("success");
+        onSuccess(); // Call the onSuccess callback
       } catch (error) {
         console.error("Fetch error:", error);
         setStatus("fail");

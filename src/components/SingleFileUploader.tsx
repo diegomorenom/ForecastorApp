@@ -10,6 +10,9 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
   const [status, setStatus] = useState<
     "initial" | "uploading" | "success" | "fail"
   >("initial");
+  const [columns, setColumns] = useState<string[]>([]);
+  const [selectedPredictionColumn, setSelectedPredictionColumn] = useState<string>('');
+  const [selectedDateColumn, setSelectedDateColumn] = useState<string>('');
 
   const MAX_FILE_SIZE = 200 * 1024 * 1024; // 10 MB
 
@@ -23,6 +26,20 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
       }
       setStatus("initial");
       setFile(selectedFile);
+
+      // Parse the CSV file to extract column names
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target && event.target.result) {
+          const content = event.target.result.toString();
+          const rows = content.split('\n');
+          if (rows.length > 0) {
+            const headers = rows[0].split(',');
+            setColumns(headers);
+          }
+        }
+      };
+      reader.readAsText(selectedFile);
     }
   };
 
@@ -32,15 +49,16 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
 
       try {
         const formData = new FormData();
+        formData.append("metadata_str", JSON.stringify({ prediction_column: selectedPredictionColumn, date_column: selectedDateColumn }));
         formData.append("csv_file", file);
+
+        console.log("File:", file);
+        console.log("metadata_str:", JSON.stringify({ prediction_column: selectedPredictionColumn, date_column: selectedDateColumn }));
+        console.log("Request body:", formData);
 
         const response = await fetch("http://localhost:5000/save_file/", {
           method: "POST",
           body: formData,
-          // No need to manually set Content-Type header for FormData
-          // headers: {
-          //   "Content-Type": "multipart/form-data",
-          // },
         });
 
         if (!response.ok) {
@@ -79,10 +97,30 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
             <li>Type: {file.type}</li>
             <li>Size: {file.size} bytes</li>
           </ul>
+
+          <div>
+            <label htmlFor="date-column">Date Column:</label>
+            <select id="date-column" value={selectedDateColumn} onChange={(e) => setSelectedDateColumn(e.target.value)}>
+              <option value="">Select column</option>
+              {columns.map((column, index) => (
+                <option key={index} value={column}>{column}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="prediction-column">Prediction Column:</label>
+            <select id="prediction-column" value={selectedPredictionColumn} onChange={(e) => setSelectedPredictionColumn(e.target.value)}>
+              <option value="">Select column</option>
+              {columns.map((column, index) => (
+                <option key={index} value={column}>{column}</option>
+              ))}
+            </select>
+          </div>
+
         </section>
       )}
 
-      {file && (
+      {file && selectedPredictionColumn && selectedDateColumn && (
         <button onClick={handleUpload} className="submit-button">
           Upload a file
         </button>

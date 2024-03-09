@@ -73,6 +73,7 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
             onChange={handleModelsChange}
           >
             <option value="HoltWinters">HoltWinters</option>
+            <option value="MovingAverage">MovingAverage</option>
             {/* <option value="NeuralNetworkFF">NeuralNetworkFF</option>
             <option value="NeuralNetworkLSTM">NeuralNetworkLSTM</option>
             <option value="RandomForest">RandomForest</option>

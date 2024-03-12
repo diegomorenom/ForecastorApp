@@ -9,10 +9,7 @@ Chart.register(TimeScale);
 interface ForecastData {
   forecast_date: string;
   forecast: number;
-  date: string;
-  family: string;
-  store_nbr: number;
-  date_updated: string;
+  model: string; // Add model property
 }
 
 const TimeSeriesChart = ({ data }: { data: ForecastData[] }) => {
@@ -20,29 +17,53 @@ const TimeSeriesChart = ({ data }: { data: ForecastData[] }) => {
 
   useEffect(() => {
     if (data && data.length > 0) {
-      const sortedData = data.sort((a, b) => {
-        return new Date(a.forecast_date).getTime() - new Date(b.forecast_date).getTime();
+      // Group data by model
+      const groupedData: { [key: string]: ForecastData[] } = {};
+      data.forEach((item) => {
+        if (!groupedData[item.model]) {
+          groupedData[item.model] = [];
+        }
+        groupedData[item.model].push(item);
       });
 
-      const chartLabels = sortedData.map((item) =>
-        moment(item.forecast_date).format('YYYY-MM-DD')
-      );
-      const chartValues = sortedData.map((item) => item.forecast);
+      // Initialize variables to store chart labels and datasets
+      const chartLabels: string[] = [];
+      const datasets: any[] = [];
+
+      // Generate datasets for each model
+      Object.keys(groupedData).forEach((model) => {
+        const sortedData = groupedData[model].sort((a, b) => {
+          return new Date(a.forecast_date).getTime() - new Date(b.forecast_date).getTime();
+        });
+
+        // Update chart labels
+        chartLabels.push(...sortedData.map((item) => moment(item.forecast_date).format('YYYY-MM-DD')));
+
+        // Generate dataset
+        datasets.push({
+          label: model,
+          data: sortedData.map((item) => item.forecast),
+          fill: false,
+          borderColor: getRandomColor(), // Random color for each line
+          tension: 0.1,
+        });
+      });
 
       setChartData({
         labels: chartLabels,
-        datasets: [
-          {
-            label: 'Forecast',
-            data: chartValues,
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1,
-          },
-        ],
+        datasets: datasets,
       });
     }
   }, [data]);
+
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   return (
     <div>

@@ -10,6 +10,7 @@ interface ForecastData {
   family: string;
   store_nbr: number; // Change to number
   date_updated: string;
+  model: string;
 }
 
 const TimeSeriesContainer = () => {
@@ -17,28 +18,38 @@ const TimeSeriesContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:5000/forecast/forecast_MovingAverage.csv');
-      
-      if (!response.body) {
-        // Handle the case where response.body is null
-        console.error('Response body is null');
-        return;
-      }
+      const urls = [
+        'http://localhost:5000/forecast/forecast_MovingAverage.csv',
+        'http://localhost:5000/forecast/forecast_HoltWinters.csv',
+        'http://localhost:5000/forecast/forecast_FacebookProphet.csv',
+        'http://localhost:5000/forecast/forecast_RandomForest.csv',
+        'http://localhost:5000/forecast/forecast_NeuralNetworkFF.csv',
+        'http://localhost:5000/forecast/forecast_NeuralNetworkLSTM.csv'
+      ];
 
-      const reader = response.body.getReader();
-      const result = await reader.read();
-      const decoder = new TextDecoder('utf-8');
-      const csv = decoder.decode(result.value);
-      const parsedData = Papa.parse<ForecastData>(csv, { header: true, skipEmptyLines: true });
-      
-      console.log('Parsed CSV data:', parsedData);
+      const responses = await Promise.all(urls.map(url => fetch(url)));
 
-      if (parsedData.errors.length > 0) {
-        console.error('Error parsing CSV:', parsedData.errors[0]);
-        return;
-      }
+      const parsedDataPromises = responses.map(async response => {
+        if (!response.ok || !response.body) {
+          throw new Error('Failed to fetch data');
+        }
+        const reader = response.body.getReader();
+        const result = await reader.read();
+        const decoder = new TextDecoder('utf-8');
+        const csv = decoder.decode(result.value);
+        return Papa.parse<ForecastData>(csv, { header: true, skipEmptyLines: true });
+      });
 
-      setCsvData(parsedData.data);
+      const parsedDataArray = await Promise.all(parsedDataPromises);
+
+      const combinedData = parsedDataArray.flatMap((parsedData, index) => {
+        return parsedData.data.map(item => ({
+          ...item,
+          model: ['MovingAverage', 'HoltWinters', 'FacebookProphet', 'RandomForest', 'NeuralNetworkFF', 'NeuralNetworkLSTM'][index]
+        }));
+      });
+
+      setCsvData(combinedData);
     };
 
     fetchData();
@@ -46,7 +57,7 @@ const TimeSeriesContainer = () => {
 
   return (
     <div>
-      <h1>Time Series Chart Example</h1>
+      <h1>Forecasting Models</h1>
       <TimeSeriesChart data={csvData} />
     </div>
   );

@@ -8,7 +8,9 @@ interface ForecastFormProps {
 const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
   const [forecastDays, setForecastDays] = useState<number>(0);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
-  const [submitted, setSubmitted] = useState<boolean>(false); // New state for submission status
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleForecastDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -29,6 +31,8 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
+    setProcessing(true);
+    setErrorMessage('');
 
     const formData = { forecastDays, selectedModels };
 
@@ -45,15 +49,18 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
         throw new Error('Failed to submit form data');
       }
 
-      const responseData = await response.json();
-      console.log(responseData); // Log the response from the API
+      if (response.status === 200) {
+        setProcessing(false);
+      }
     } catch (error) {
       console.error(error);
+      setProcessing(false);
+      setErrorMessage('Error generating forecast. Please try again.');
     }
   };
 
   return (
-    <div className="form-container"> {/* Apply styles from CSS */}
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="forecastDays">Forecast Days:</label>
@@ -74,17 +81,20 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
           >
             <option value="HoltWinters">HoltWinters</option>
             <option value="MovingAverage">MovingAverage</option>
-            {/* <option value="NeuralNetworkFF">NeuralNetworkFF</option>
-            <option value="NeuralNetworkLSTM">NeuralNetworkLSTM</option>
             <option value="RandomForest">RandomForest</option>
-            <option value="ExponentialSmoothing">ExponentialSmoothing</option>
-            <option value="SupportVectorRegression">SupportVectorRegression</option> */}
+            <option value="NeuralNetworkFF">NeuralNetworkFF</option>
+            <option value="NeuralNetworkLSTM">NeuralNetworkLSTM</option>
+            <option value="FacebookProphet">FacebookProphet</option>
           </select>
         </div>
         <button type="submit">Submit</button>
 
+        {/* Conditionally render the processing message */}
+        {processing && <p className="processing-message">Generating forecast...</p>}
         {/* Display the submitted message if submitted is true */}
-        {submitted && <p className="submitted-message">Submitted!</p>}
+        {submitted && !processing && !errorMessage && <p className="submitted-message">Processed successfully!</p>}
+        {/* Display error message if there's an error */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
   );

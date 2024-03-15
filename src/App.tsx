@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // Import React for JSX syntax
 import './App.css'; // Import the CSS file
 import SingleFileUploader from './components/SingleFileUploader';
 import ForecastForm from './components/ForecastForm'; // Import the ForecastForm component
@@ -13,23 +13,17 @@ Chart.register(...registerables);
 
 function App() {
   const [step, setStep] = useState(1);
-  const [forecastDays, setForecastDays] = useState(0);
-  const [selectedModels, setSelectedModels] = useState<string[]>([]);
 
   const handleFileUploadSuccess = () => {
     setStep(2);
   };
 
-  const handleFormSubmit = (days: number, models: string[]) => {
-    setForecastDays(days);
-    setSelectedModels(models);
+  const handleFormSubmit = () => {
     setStep(3);
   };
 
   const handleStartOver = () => {
     setStep(1);
-    setForecastDays(0);
-    setSelectedModels([]);
   };
 
   return (

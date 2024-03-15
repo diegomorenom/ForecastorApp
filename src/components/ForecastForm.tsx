@@ -5,7 +5,7 @@ interface ForecastFormProps {
   onSubmit: (forecastDays: number, selectedModels: string[]) => void;
 }
 
-const ForecastForm: React.FC<ForecastFormProps> = ({ onSubmit }) => {
+const ForecastForm: React.FC<ForecastFormProps> = () => {
   const [forecastDays, setForecastDays] = useState<number>(0);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);

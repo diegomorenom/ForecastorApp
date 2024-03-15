@@ -12,7 +12,12 @@ interface ForecastData {
   model: string; // Add model property
 }
 
-const TimeSeriesChart = ({ data }: { data: ForecastData[] }) => {
+interface TimeSeriesChartProps {
+  data: ForecastData[];
+  style?: React.CSSProperties; // Define style prop
+}
+
+const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
   const [chartData, setChartData] = useState<any>(null);
 
   useEffect(() => {
@@ -66,8 +71,7 @@ const TimeSeriesChart = ({ data }: { data: ForecastData[] }) => {
   };
 
   return (
-    <div>
-      <h2>Time Series Chart</h2>
+    <div className="chart-container" style={style}>
       {chartData && (
         <Line
           data={chartData}

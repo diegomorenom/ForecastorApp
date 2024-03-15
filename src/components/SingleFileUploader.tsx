@@ -56,7 +56,7 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
         console.log("metadata_str:", JSON.stringify({ prediction_column: selectedPredictionColumn, date_column: selectedDateColumn }));
         console.log("Request body:", formData);
 
-        const response = await fetch("http://localhost:5000/save_file/", {
+        const response = await fetch("  save_file/", {
           method: "POST",
           body: formData,
         });

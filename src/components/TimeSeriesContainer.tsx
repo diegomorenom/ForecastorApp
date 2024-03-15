@@ -19,12 +19,13 @@ const TimeSeriesContainer = () => {
   useEffect(() => {
     const fetchData = async () => {
       const urls = [
-        'http://localhost:5000/forecast/forecast_MovingAverage.csv',
-        'http://localhost:5000/forecast/forecast_HoltWinters.csv',
-        'http://localhost:5000/forecast/forecast_FacebookProphet.csv',
-        'http://localhost:5000/forecast/forecast_RandomForest.csv',
-        'http://localhost:5000/forecast/forecast_NeuralNetworkFF.csv',
-        'http://localhost:5000/forecast/forecast_NeuralNetworkLSTM.csv'
+        'http://3.22.41.130:8000/data_base/data_test.csv',
+        'http://3.22.41.130:8000/forecast/forecast_MovingAverage.csv',
+        'http://3.22.41.130:8000/forecast/forecast_HoltWinters.csv',
+        'http://3.22.41.130:8000/forecast/forecast_FacebookProphet.csv',
+        'http://3.22.41.130:8000/forecast/forecast_RandomForest.csv',
+        'http://3.22.41.130:8000/forecast/forecast_NeuralNetworkFF.csv',
+        'http://3.22.41.130:8000/forecast/forecast_NeuralNetworkLSTM.csv'
       ];
 
       const responses = await Promise.all(urls.map(url => fetch(url)));
@@ -45,7 +46,7 @@ const TimeSeriesContainer = () => {
       const combinedData = parsedDataArray.flatMap((parsedData, index) => {
         return parsedData.data.map(item => ({
           ...item,
-          model: ['MovingAverage', 'HoltWinters', 'FacebookProphet', 'RandomForest', 'NeuralNetworkFF', 'NeuralNetworkLSTM'][index]
+          model: ['data_test', 'MovingAverage', 'HoltWinters', 'FacebookProphet', 'RandomForest', 'NeuralNetworkFF', 'NeuralNetworkLSTM'][index]
         }));
       });
 
@@ -56,9 +57,9 @@ const TimeSeriesContainer = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ width: '80%', margin: '0 auto' }}> {/* Apply styles */}
       <h1>Forecasting Models</h1>
-      <TimeSeriesChart data={csvData} />
+      <TimeSeriesChart data={csvData} style={{ width: '100%' }} /> {/* Apply styles */}
     </div>
   );
 };

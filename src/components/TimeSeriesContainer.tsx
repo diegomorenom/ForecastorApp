@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import React for JSX syntax
+import { useState, useEffect } from 'react'; // Import React for JSX syntax
 import Papa from 'papaparse';
 import TimeSeriesChart from './TimeSeriesChart';
 

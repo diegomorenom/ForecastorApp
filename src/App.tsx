@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import React for JSX syntax
+import { useState } from 'react'; // Import React for JSX syntax
 import './App.css'; // Import the CSS file
 import SingleFileUploader from './components/SingleFileUploader';
 import ForecastForm from './components/ForecastForm'; // Import the ForecastForm component

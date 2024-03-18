@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className="app-container"> {/* Apply styles from CSS */}
-      <img src="./src/assets/ForecastorWeb.png" alt="Forecastor, time series" className="app-logo"></img>
+      <img src="./ForecastorWeb.png" alt="Forecastor, time series" className="app-logo"></img>
       {step === 1 && (
         <>
           <h2 className="upload-heading">Upload your time series file.</h2>

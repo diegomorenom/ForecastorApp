@@ -37,7 +37,7 @@ const ForecastForm: React.FC<ForecastFormProps> = () => {
     const formData = { forecastDays, selectedModels };
 
     try {
-      const response = await fetch('http://3.22.41.130:8000/process_forecast', {
+      const response = await fetch('http://13.59.249.203:8000/process_forecast', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

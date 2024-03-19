@@ -1,0 +1,20 @@
+.error-metrics-container {
+    margin-top: 20px;
+  }
+  
+  .error-metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .error-metrics-table th,
+  .error-metrics-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .error-metrics-table th {
+    background-color: #f2f2f2;
+  }
+  

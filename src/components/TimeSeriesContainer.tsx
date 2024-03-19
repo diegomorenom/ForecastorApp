@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'; // Import React for JSX syntax
 import Papa from 'papaparse';
 import TimeSeriesChart from './TimeSeriesChart';
+import ErrorMetricsTable from './ErrorMetricsTable'; 
 
 // Define the interface for CSV data
 interface ForecastData {
@@ -60,7 +61,11 @@ const TimeSeriesContainer = () => {
     <div style={{ width: '80%', margin: '0 auto' }}> {/* Apply styles */}
       <h1>Forecasting Models</h1>
       <TimeSeriesChart data={csvData} style={{ width: '100%' }} /> {/* Apply styles */}
+      <div className="error-metrics">
+        <ErrorMetricsTable />
+      </div>
     </div>
+    
   );
 };
 

@@ -35,8 +35,11 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
       const chartLabels: string[] = [];
       const datasets: any[] = [];
 
+      // Define a fixed color palette
+      const colorPalette = ['#607D8B', '#455A64', '#37474F', '#263238', '#78909C', '#90A4AE', '#B0BEC5'];
+
       // Generate datasets for each model
-      Object.keys(groupedData).forEach((model) => {
+      Object.keys(groupedData).forEach((model, index) => {
         const sortedData = groupedData[model].sort((a, b) => {
           return new Date(a.forecast_date).getTime() - new Date(b.forecast_date).getTime();
         });
@@ -49,7 +52,7 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
           label: model,
           data: sortedData.map((item) => item.forecast),
           fill: false,
-          borderColor: getRandomColor(), // Random color for each line
+          borderColor: model === 'data_test' ? '#ff7f0e' : colorPalette[index % colorPalette.length],
           tension: 0.1,
         });
       });
@@ -60,15 +63,6 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
       });
     }
   }, [data]);
-
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
 
   return (
     <div className="chart-container" style={style}>

@@ -1,0 +1,21 @@
+
+  
+  .full-screen-toggle {
+    
+
+    padding: 10px 10px;
+    background-color: #11b5bb;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .full-screen-toggle:hover {
+    background-color: #0d8e94; /* Darker shade on hover */
+  }
+  
+  .full-screen-toggle.full-screen {
+    background-color: #ff7f0e; /* Different color when in full screen mode */
+  }
+  

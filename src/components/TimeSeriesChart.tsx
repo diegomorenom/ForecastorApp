@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment';
 import { Chart, TimeScale } from 'chart.js'; // Import TimeScale
+import "./TimeSeriesChart.css"; // Import the CSS file
 
 // Register TimeScale
 Chart.register(TimeScale);

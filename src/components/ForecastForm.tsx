@@ -3,9 +3,10 @@ import './ForecastForm.css'; // Import the CSS file
 
 interface ForecastFormProps {
   onSubmit: (forecastDays: number, selectedModels: string[]) => void;
+  onNextStep: () => void; // Add onNextStep prop to handle moving to the next step
 }
 
-const ForecastForm: React.FC<ForecastFormProps> = () => {
+const ForecastForm: React.FC<ForecastFormProps> = ({ onNextStep }) => {
   const [forecastDays, setForecastDays] = useState<number>(0);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -51,6 +52,7 @@ const ForecastForm: React.FC<ForecastFormProps> = () => {
 
       if (response.status === 200) {
         setProcessing(false);
+        onNextStep(); // Move to the next step after processing successfully
       }
     } catch (error) {
       console.error(error);

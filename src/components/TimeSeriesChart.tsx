@@ -19,6 +19,7 @@ interface TimeSeriesChartProps {
 
 const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
   const [chartData, setChartData] = useState<any>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -64,8 +65,62 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullScreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullScreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullScreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullScreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullScreenChange);
+    };
+  }, []);
+
+  const handleFullScreenToggle = () => {
+    const elem = document.documentElement;
+    if (!isFullScreen) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if ((elem as any).webkitRequestFullscreen) {
+        (elem as any).webkitRequestFullscreen(); // Type assertion
+      } else if ((elem as any).msRequestFullscreen) {
+        (elem as any).msRequestFullscreen(); // Type assertion
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen(); // Type assertion
+      } else if ((document as any).msExitFullscreen) {
+        (document as any).msExitFullscreen(); // Type assertion
+      }
+    }
+    setIsFullScreen(!isFullScreen);
+  };
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && isFullScreen) {
+      handleFullScreenToggle();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [isFullScreen]);
+
   return (
-    <div className="chart-container" style={style}>
+    <div className={`chart-container ${isFullScreen ? 'full-screen' : ''}`} style={isFullScreen ? { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 9999, backgroundColor: '#ffffff' } : style}>
       {chartData && (
         <Line
           data={chartData}
@@ -75,6 +130,9 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
                 type: 'time',
                 time: {
                   unit: 'day',
+                  displayFormats: {
+                    day: 'YYYY-MM-DD'
+                  }
                 },
               },
               y: {
@@ -84,9 +142,24 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data, style }) => {
                 },
               },
             },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    const label = context.dataset.label || '';
+                    if (label) {
+                      const value = context.parsed.y.toLocaleString(undefined, { maximumFractionDigits: 0 });
+                      return `${label}: ${value}`;
+                    }
+                    return '';
+                  },
+                },
+              },
+            },
           }}
         />
       )}
+      <button className={`full-screen-toggle`} onClick={handleFullScreenToggle}>{isFullScreen ? 'Exit Full Screen' : 'Full Screen'}</button>
     </div>
   );
 };

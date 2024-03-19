@@ -1,19 +1,11 @@
 /* SingleFileUploader.css */
 .file-uploader-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.file-input {
-  display: none;
+  text-align: center;
 }
 
 .file-label {
   display: inline-block;
+  margin-bottom: 10px;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -21,13 +13,35 @@
   cursor: pointer;
 }
 
+.file-input {
+  display: none;
+}
+
 .file-details {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.file-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-details ul li {
+  margin-bottom: 5px;
+}
+
+.file-details select {
   margin-top: 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .submit-button {
-  display: block;
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -41,5 +55,5 @@
 }
 
 .result {
-  margin-top: 10px;
+  margin-top: 20px;
 }

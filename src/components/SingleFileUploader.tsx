@@ -91,7 +91,7 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
 
       {file && (
         <section className="file-details">
-          File details:
+          <h3>File details:</h3>
           <ul>
             <li>Name: {file.name}</li>
             <li>Type: {file.type}</li>
@@ -116,7 +116,6 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
               ))}
             </select>
           </div>
-
         </section>
       )}
 

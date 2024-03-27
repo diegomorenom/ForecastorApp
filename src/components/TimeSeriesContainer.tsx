@@ -20,13 +20,13 @@ const TimeSeriesContainer = () => {
   useEffect(() => {
     const fetchData = async () => {
       const urls = [
-        'http://13.59.249.203:8000/data_base/data_test.csv',
-        'http://13.59.249.203:8000/forecast/forecast_MovingAverage.csv',
-        'http://13.59.249.203:8000/forecast/forecast_HoltWinters.csv',
-        'http://13.59.249.203:8000/forecast/forecast_FacebookProphet.csv',
-        'http://13.59.249.203:8000/forecast/forecast_RandomForest.csv',
-        'http://13.59.249.203:8000/forecast/forecast_NeuralNetworkFF.csv',
-        'http://13.59.249.203:8000/forecast/forecast_NeuralNetworkLSTM.csv'
+        'https://api.seriesforecastor.com:8000/data_base/data_test.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_MovingAverage.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_HoltWinters.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_FacebookProphet.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_RandomForest.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_NeuralNetworkFF.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_NeuralNetworkLSTM.csv'
       ];
 
       const responses = await Promise.all(urls.map(url => fetch(url)));

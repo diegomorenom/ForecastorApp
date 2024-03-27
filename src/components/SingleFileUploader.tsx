@@ -56,7 +56,7 @@ const SingleFileUploader: React.FC<SingleFileUploaderProps> = ({ onSuccess }) =>
         console.log("metadata_str:", JSON.stringify({ prediction_column: selectedPredictionColumn, date_column: selectedDateColumn }));
         console.log("Request body:", formData);
 
-        const response = await fetch("http://13.59.249.203:8000/save_file/", {
+        const response = await fetch("https://api.seriesforecastor.com:8000/save_file/", {
           method: "POST",
           body: formData,
         });

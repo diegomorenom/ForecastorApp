@@ -38,7 +38,7 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onNextStep }) => {
     const formData = { forecastDays, selectedModels };
 
     try {
-      const response = await fetch('http://13.59.249.203:8000/process_forecast', {
+      const response = await fetch('https://api.seriesforecastor.com:8000/process_forecast', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

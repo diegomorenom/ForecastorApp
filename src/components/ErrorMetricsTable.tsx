@@ -17,7 +17,7 @@ const ErrorMetricsTable: React.FC = () => {
   useEffect(() => {
     const fetchErrorMetrics = async () => {
       try {
-        const response = await fetch('http://13.59.249.203:8000/error_metrics');
+        const response = await fetch('https://api.seriesforecastor.com:8000/error_metrics');
         if (!response.ok) {
           throw new Error('Failed to fetch error metrics');
         }

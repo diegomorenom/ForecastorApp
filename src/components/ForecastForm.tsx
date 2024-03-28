@@ -92,6 +92,8 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onNextStep }) => {
             <option value="NeuralNetworkFF">NeuralNetworkFF</option>
             <option value="NeuralNetworkLSTM">NeuralNetworkLSTM</option>
             <option value="FacebookProphet">FacebookProphet</option>
+            <option value="NeuralProphet">NeuralProphet</option>
+            <option value="XGBoost">XGBoost</option>
           </select>
         </div>
         <button type="submit">Submit</button>

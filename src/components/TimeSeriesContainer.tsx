@@ -25,8 +25,10 @@ const TimeSeriesContainer = () => {
         'https://api.seriesforecastor.com:8000/forecast/forecast_HoltWinters.csv',
         'https://api.seriesforecastor.com:8000/forecast/forecast_FacebookProphet.csv',
         'https://api.seriesforecastor.com:8000/forecast/forecast_RandomForest.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_NeuralProphet.csv',
         'https://api.seriesforecastor.com:8000/forecast/forecast_NeuralNetworkFF.csv',
-        'https://api.seriesforecastor.com:8000/forecast/forecast_NeuralNetworkLSTM.csv'
+        'https://api.seriesforecastor.com:8000/forecast/forecast_NeuralNetworkLSTM.csv',
+        'https://api.seriesforecastor.com:8000/forecast/forecast_XGBoost.csv'
       ];
 
       const responses = await Promise.all(urls.map(url => fetch(url)));
@@ -47,7 +49,7 @@ const TimeSeriesContainer = () => {
       const combinedData = parsedDataArray.flatMap((parsedData, index) => {
         return parsedData.data.map(item => ({
           ...item,
-          model: ['data_test', 'MovingAverage', 'HoltWinters', 'FacebookProphet', 'RandomForest', 'NeuralNetworkFF', 'NeuralNetworkLSTM'][index]
+          model: ['data_test', 'MovingAverage', 'HoltWinters', 'FacebookProphet', 'RandomForest', 'NeuralProphet', 'NeuralNetworkFF', 'NeuralNetworkLSTM', 'XGBoost'][index]
         }));
       });
 

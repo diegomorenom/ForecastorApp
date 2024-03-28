@@ -53,6 +53,11 @@ const ForecastForm: React.FC<ForecastFormProps> = ({ onNextStep }) => {
       if (response.status === 200) {
         setProcessing(false);
         onNextStep(); // Move to the next step after processing successfully
+        // Track form submission event with Google Analytics
+        (window as any).gtag('event', 'submit_forecast_form', {
+          'event_category': 'Form Submission',
+          'event_label': 'Forecast Form Submitted'
+          });
       }
     } catch (error) {
       console.error(error);
